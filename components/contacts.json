@@ -1,0 +1,25 @@
+{
+  "contacts": [
+    {
+      "id": "0",
+      "name": "Adan",
+      "lastName": "Ruano",
+      "phone": "77985857",
+      "favorite": false
+    },
+    {
+      "id": "1",
+      "name": "Elmer",
+      "lastName": "Cruz",
+      "phone": "61525599",
+      "favorite": true
+    },
+    {
+      "id": "2",
+      "name": "Juan",
+      "lastName": "Perez",
+      "phone": "75667432",
+      "favorite": false
+    }
+  ]
+}
