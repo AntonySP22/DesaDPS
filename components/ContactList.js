@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, FlatList, TextInput, TouchableOpacity, Text, StyleSheet, Modal, Alert } from 'react-native';
 import Contact from './Contact';
 
-const ContactList = ({ contacts, onAddContact }) => {
+const ContactList = ({ contacts, onDelete, onToggleFavorite, onAddContact }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [newContact, setNewContact] = useState({ name: '', lastName: '', phone: '' });
 
@@ -21,6 +21,12 @@ const ContactList = ({ contacts, onAddContact }) => {
       return;
     }
 
+    const phoneRegex = /^\d{8}$/; 
+    if (!phoneRegex.test(newContact.phone)) {
+      Alert.alert('Error', 'El teléfono debe tener exactamente 8 dígitos');
+      return;
+    }
+    
     // Si pasa las validaciones
     onAddContact({
       ...newContact,
@@ -32,12 +38,23 @@ const ContactList = ({ contacts, onAddContact }) => {
     Alert.alert('Éxito', 'Contacto agregado correctamente');
   };
 
+  const sortedContacts = [...contacts].sort((a, b) => {
+    if (a.favorite === b.favorite) return 0;
+    return a.favorite ? -1 : 1;
+  });
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={contacts}
+        data={sortedContacts}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Contact contact={item} />}
+        renderItem={({ item }) => (
+          <Contact
+            contact={item}
+            onDelete={onDelete}
+            onToggleFavorite={onToggleFavorite}
+          />
+        )}
       />
       
       <TouchableOpacity 

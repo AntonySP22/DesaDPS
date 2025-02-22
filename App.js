@@ -49,6 +49,30 @@ export default function App() {
     }
   };
 
+  const handleDeleteContact = (id) => {
+    try {
+      setContacts(prevContacts => 
+        prevContacts.filter(contact => contact.id !== id)
+      );
+    } catch (error) {
+      Alert.alert('Error', 'Failed to delete contact');
+    }
+  };
+
+  const handleToggleFavorite = (id) => {
+    try {
+      setContacts(prevContacts => 
+        prevContacts.map(contact =>
+          contact.id === id
+            ? { ...contact, favorite: !contact.favorite }
+            : contact
+        )
+      );
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update contact');
+    }
+  };
+
   if (isLoading) {
     return <View style={styles.container} />;
   }
@@ -58,6 +82,8 @@ export default function App() {
       <ContactList
         contacts={contacts}
         onAddContact={handleAddContact}
+        onDelete={handleDeleteContact}
+        onToggleFavorite={handleToggleFavorite}
       />
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -66,8 +92,11 @@ export default function App() {
 
 ContactList.propTypes = {
   contacts: PropTypes.array.isRequired,
-  onAddContact: PropTypes.func.isRequired
+  onAddContact: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onToggleFavorite: PropTypes.func.isRequired
 };
+
 
 const styles = StyleSheet.create({
   container: {
